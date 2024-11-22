@@ -1,0 +1,53 @@
+name: Update itgapi.yaml
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight UTC
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+permissions:
+  contents: write
+
+jobs:
+  update-itgapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate itgapi.yaml
+        run: |
+          python docs-to-yaml.py > itgapi.yaml
+
+      - name: Commit changes
+        id: commit_changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add itgapi.yaml
+          if ! git diff --cached --quiet; then
+            git commit -m "Update itgapi.yaml"
+            echo "committed=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes to commit."
+            echo "committed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push changes
+        if: steps.commit_changes.outputs.committed == 'true'
+        run: |
+          git push
