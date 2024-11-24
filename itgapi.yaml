@@ -2,11 +2,25 @@ openapi: 3.0.0
 info:
   title: ITGlue API
   version: 1.0.0
-  description: '**Authentication/Request Headers**
+  description: 'Generated from https://github.com/jmaddington/ITG-Glue-OpenAPI
 
+
+    This document strives to accurately represent IT Glue''s API in the OpenAPI 3.0
+    format, but is best effort only. This is NOT
+
+    an official IT Glue or Kaseya document.
+
+
+    Find official documentation at https://api.itglue.com/developer/
+
+    Details of pagination at https://help.itglue.kaseya.com/help/Content/1-admin/it-glue-api/pagination-in-the-it-glue-api.html
+
+    Details of sorts and filters at https://help.itglue.kaseya.com/help/Content/1-admin/it-glue-api/sorting-and-filtering-in-the-it-glue-api.html
+
+
+    **Authentication/Request Headers**
 
     All API requests require the following headers:
-
 
     - `x-api-key: {{api-token}}`
 

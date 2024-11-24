@@ -21,8 +21,14 @@ openapi_spec = {
         'title': 'ITGlue API',
         'version': '1.0.0',
         'description': (
-            "**Authentication/Request Headers**\n\n"
-            "All API requests require the following headers:\n\n"
+            "Generated from https://github.com/jmaddington/ITG-Glue-OpenAPI\n\n"
+            "This document strives to accurately represent IT Glue's API in the OpenAPI 3.0 format, but is best effort only. This is NOT\n"
+            "an official IT Glue or Kaseya document.\n\n"
+            "Find official documentation at https://api.itglue.com/developer/\n"
+            "Details of pagination at https://help.itglue.kaseya.com/help/Content/1-admin/it-glue-api/pagination-in-the-it-glue-api.html\n"
+            "Details of sorts and filters at https://help.itglue.kaseya.com/help/Content/1-admin/it-glue-api/sorting-and-filtering-in-the-it-glue-api.html\n\n"
+            "**Authentication/Request Headers**\n"
+            "All API requests require the following headers:\n"
             "- `x-api-key: {{api-token}}`\n"
             "- `Content-Type: application/vnd.api+json`\n\n"
             "Note: If the request does not have a payload, the `Content-Type` header is not required."
