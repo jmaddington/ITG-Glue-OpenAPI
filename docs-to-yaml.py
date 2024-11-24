@@ -73,6 +73,22 @@ def get_param_type(validations):
     else:
         return 'string'
 
+# Function to check for duplicate parameters
+def add_parameter(parameters_list, new_param):
+    for param in parameters_list:
+        if param['name'] == new_param['name'] and param['in'] == new_param['in']:
+            # Duplicate found, do not add
+            return
+    parameters_list.append(new_param)
+
+# Define endpoints that support filtering and their available filters
+available_filters = {
+    '/users_metrics': ['date', 'user_ID'],
+    '/configurations': ['name', 'status', 'organization_id'],
+    '/organizations': ['name', 'status'],
+    # Add more endpoints and their filters as needed
+}
+
 # Step 5: Iterate over each div and extract the necessary information
 for div in divs:
     # Get the class name
@@ -103,27 +119,30 @@ for div in divs:
                 if path not in openapi_spec['paths']:
                     openapi_spec['paths'][path] = {}
                 # Initialize the method details
-                openapi_spec['paths'][path][method] = {
-                    'summary': '',
-                    'description': '',
-                    'parameters': [],
-                    'responses': {
-                        '200': {
-                            'description': 'Successful response',
-                            'content': {
-                                'application/json': {
-                                    'schema': {
-                                        'type': 'object'
+                if method not in openapi_spec['paths'][path]:
+                    openapi_spec['paths'][path][method] = {
+                        'summary': '',
+                        'description': '',
+                        'parameters': [],
+                        'responses': {
+                            '200': {
+                                'description': 'Successful response',
+                                'content': {
+                                    'application/json': {
+                                        'schema': {
+                                            'type': 'object'
+                                        }
                                     }
                                 }
                             }
-                        }
-                    },
-                    'security': [{'apiKeyAuth': []}]
-                }
+                        },
+                        'security': [{'apiKeyAuth': []}]
+                    }
+                # Reference to parameters list
+                parameters = openapi_spec['paths'][path][method]['parameters']
                 # Add path parameters to parameters list
                 for param in path_params:
-                    openapi_spec['paths'][path][method]['parameters'].append({
+                    param_obj = {
                         'name': param,
                         'in': 'path',
                         'description': '',
@@ -131,7 +150,59 @@ for div in divs:
                         'schema': {
                             'type': 'string'  # Default to string, adjust based on actual type if available
                         }
-                    })
+                    }
+                    add_parameter(parameters, param_obj)
+                # Add paging, sorting, and filtering parameters for GET methods
+                if method == 'get':
+                    # Add paging parameters
+                    paging_params = [
+                        {
+                            'name': 'page[size]',
+                            'in': 'query',
+                            'description': 'Number of items per page (max 1000)',
+                            'required': False,
+                            'schema': {
+                                'type': 'integer',
+                                'maximum': 1000
+                            }
+                        },
+                        {
+                            'name': 'page[number]',
+                            'in': 'query',
+                            'description': 'Page number to retrieve',
+                            'required': False,
+                            'schema': {
+                                'type': 'integer',
+                                'minimum': 1
+                            }
+                        }
+                    ]
+                    for param in paging_params:
+                        add_parameter(parameters, param)
+                    # Add sorting parameter
+                    sort_param = {
+                        'name': 'sort',
+                        'in': 'query',
+                        'description': 'Field by which to sort the results. Prepend \'-\' for descending order.',
+                        'required': False,
+                        'schema': {
+                            'type': 'string'
+                        }
+                    }
+                    add_parameter(parameters, sort_param)
+                    # Add filtering parameters based on known filters
+                    filters = available_filters.get(path, [])
+                    for filter_param in filters:
+                        filter_obj = {
+                            'name': f'filter[{filter_param}]',
+                            'in': 'query',
+                            'description': f'Filter results by {filter_param}',
+                            'required': False,
+                            'schema': {
+                                'type': 'string'  # Adjust type as needed
+                            }
+                        }
+                        add_parameter(parameters, filter_obj)
                 # Extract description and parameters
                 article = div.find('article')
                 if article:
@@ -139,6 +210,12 @@ for div in divs:
                     description = article.find('p')
                     if description:
                         openapi_spec['paths'][path][method]['description'] = description.get_text(strip=True)
+                        # Add note about pagination limits
+                        if method == 'get':
+                            openapi_spec['paths'][path][method]['description'] += (
+                                "\n\nNote: The maximum number of results that can be requested is 1000."
+                                " If your requests are timing out, try lowering the page size."
+                            )
                     # Parameters
                     params_heading = article.find('h2', string='Params')
                     if params_heading:
@@ -156,22 +233,22 @@ for div in divs:
                                     # Determine if the parameter is required
                                     required = 'required' in param_info
                                     # Determine the parameter location
-                                    # If the parameter is already in path parameters, skip adding again
-                                    if param_name in path_params:
-                                        # Update the description of the existing path parameter
-                                        for p in openapi_spec['paths'][path][method]['parameters']:
-                                            if p['name'] == param_name and p['in'] == 'path':
-                                                p['description'] = param_description
-                                                # Determine the parameter type
-                                                validations_div = desc_cell.find('div', string=re.compile('Validations:'))
-                                                param_type = 'string'
-                                                if validations_div:
-                                                    validations_text = validations_div.find_next('ul').get_text()
-                                                    param_type = get_param_type(validations_text)
-                                                p['schema']['type'] = param_type
-                                                break
-                                        continue
-                                    else:
+                                    # Check if parameter is already in parameters list
+                                    param_in_list = False
+                                    for p in parameters:
+                                        if p['name'] == param_name:
+                                            param_in_list = True
+                                            # Update description and schema if needed
+                                            p['description'] = param_description
+                                            # Determine the parameter type
+                                            validations_div = desc_cell.find('div', string=re.compile('Validations:'))
+                                            param_type = 'string'
+                                            if validations_div:
+                                                validations_text = validations_div.find_next('ul').get_text()
+                                                param_type = get_param_type(validations_text)
+                                            p['schema']['type'] = param_type
+                                            break
+                                    if not param_in_list:
                                         param_in = 'query'
                                         # Determine the parameter type
                                         validations_div = desc_cell.find('div', string=re.compile('Validations:'))
@@ -180,8 +257,8 @@ for div in divs:
                                             validations_text = validations_div.find_next('ul').get_text()
                                             param_type = get_param_type(validations_text)
                                         # Clean up parameter name
-                                        param_name = param_name.replace('[', '.').replace(']', '')
-                                        openapi_spec['paths'][path][method]['parameters'].append({
+                                        param_name_clean = param_name.replace('[', '.').replace(']', '')
+                                        param_obj = {
                                             'name': param_name,
                                             'in': param_in,
                                             'description': param_description,
@@ -189,7 +266,8 @@ for div in divs:
                                             'schema': {
                                                 'type': param_type
                                             }
-                                        })
+                                        }
+                                        add_parameter(parameters, param_obj)
                     # Responses
                     errors_heading = article.find('h2', string='Errors')
                     if errors_heading:
