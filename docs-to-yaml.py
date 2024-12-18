@@ -113,7 +113,7 @@ for div in divs:
         for h1 in h1_tags:
             endpoint = h1.get_text(strip=True)
             # Match the HTTP method and path
-            match = re.match(r'(GET|POST|PUT|DELETE)\s+(\/[^\s]*)', endpoint)
+            match = re.match(r'(GET|POST|PATCH|DELETE)\s+(\/[^\s]*)', endpoint)
             if match:
                 method = match.group(1).lower()
                 path = match.group(2)
