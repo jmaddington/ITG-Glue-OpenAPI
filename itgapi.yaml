@@ -134,6 +134,122 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of configuration interfaces, also known as bulk
+        updating. Bulk updates using a nested         relationships route are not
+        supported. Returns 422 Bad Request error if trying to update         an externally
+        synced, primary IP address.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cconfiguration_interfacesâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80\
+          ¦}Validations:Must be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:configuration_interfaces.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][configuration_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][ip_address]
+        in: query
+        description: IP4 and IP6 are supportedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][mac_address]
+        in: query
+        description: Must be a valid MAC addressValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][primary]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[ip_address]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /configuration_interfaces/{id}:
     get:
       summary: ''
@@ -190,6 +306,107 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing configuration interface. Returns
+        422 Bad Request error         if trying to update an externally synced, primary
+        IP address.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: configuration_id
+        in: query
+        description: 'Only required for nested relationships route.Validations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid configuration ID in your account.'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:configuration_interfaces.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][configuration_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][ip_address]
+        in: query
+        description: IP4 and IP6 are supportedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mac_address]
+        in: query
+        description: Must be a valid MAC addressValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][primary]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /configuration_statuses:
@@ -349,6 +566,60 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a configuration status in your account. Returns 422 Bad
+        Request error if trying to update an externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:configuration_statuses.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /configuration_types:
     get:
       summary: ''
@@ -502,6 +773,60 @@ paths:
                 type: object
         '401':
           description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a configuration type in your account. Returns 422 Bad Request
+        error if trying to update an externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:configuration_types.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
         '404':
           description: Not Found
       security:
@@ -962,6 +1287,325 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: 'Updates a list of items, also known as bulk updating. Bulk updates
+        using a nested relationships route are not supported.         Returns 422
+        Unprocessable Entity error if any relationships are present in the request.         Returns
+        422 Unprocessable Entity error if trying to update an externally synced record
+        on         attributes other than: archived, asset_tag, notes, purchased_at,
+        restricted, serial_number, warranty_expires_at, mitp_device_expiration_date,
+        mitp_end_of_life_date'
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cconfigurationsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:configurations.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][configuration_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][configuration_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][location_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][contact_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][manufacturer_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][model_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][operating_system_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][operating_system_notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][hostname]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][primary_ip]
+        in: query
+        description: IP4 and IP6 are supportedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][mac_address]
+        in: query
+        description: 17 Character limitValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][default_gateway]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][serial_number]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][asset_tag]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][position]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][installed_by]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][purchased_by]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][purchased_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][warranty_expires_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][mitp_device_expiration_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][mitp_end_of_life_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][installed_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[configuration_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[configuration_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[contact_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[serial_number]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[mac_address]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[asset_tag]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[psa_id]
+        in: query
+        description: 'Validations:Must be a StringMetadata:Notes: This must be accompanied
+          by the filter for psa_integration_type'
+        required: false
+        schema:
+          type: string
+      - name: filter[psa_integration_type]
+        in: query
+        description: Validations:Must be one of:manage,autotask,tigerpaw,kaseya-bms,pulseway-psa,vorex.
+        required: false
+        schema:
+          type: string
+      - name: filter[rmm_id]
+        in: query
+        description: 'Validations:Must be a StringMetadata:Notes: This must be accompanied
+          by the filter for rmm_integration_type'
+        required: false
+        schema:
+          type: string
+      - name: filter[rmm_integration_type]
+        in: query
+        description: Validations:Must be one of:addigy,aem,atera,auvik,managed-workplace,continuum,jamf-pro,kaseya-vsa,automate,log-me-in,msp-rmm,meraki,msp-n-central,ninja-rmm,panorama9,pulseway-rmm,syncro,watchman-monitoring,office365,vsa-x.
+        required: false
+        schema:
+          type: string
+      - name: filter[archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified configurations. Returns the deleted
@@ -1348,6 +1992,107 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing configuration interface. Returns
+        422 Bad Request error         if trying to update an externally synced, primary
+        IP address.
+      parameters:
+      - name: configuration_id
+        in: path
+        description: 'Only required for nested relationships route.Validations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid configuration ID in your account.'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:configuration_interfaces.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][configuration_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][ip_address]
+        in: query
+        description: IP4 and IP6 are supportedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mac_address]
+        in: query
+        description: Must be a valid MAC addressValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][primary]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /configurations/{id}:
     get:
       summary: ''
@@ -1413,6 +2158,236 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: 'Updates the details of an existing configuration.         Returns
+        422 Unprocessable Entity error if any relationships are present in the request.         Returns
+        422 Unprocessable Entity error if trying to update an externally synced record
+        on         attributes other than: archived, asset_tag, notes, purchased_at,
+        restricted, serial_number, warranty_expires_at, mitp_device_expiration_date,
+        mitp_end_of_life_date'
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:configurations.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][configuration_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][configuration_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][location_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][contact_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][manufacturer_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][model_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][operating_system_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][operating_system_notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][hostname]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][primary_ip]
+        in: query
+        description: IP4 and IP6 are supportedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mac_address]
+        in: query
+        description: 17 Character limitValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][default_gateway]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][serial_number]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][asset_tag]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][position]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][installed_by]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][purchased_by]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][purchased_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][warranty_expires_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mitp_device_expiration_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mitp_end_of_life_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][installed_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /contact_types:
@@ -1570,6 +2545,60 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a contact type in your account. Returns 422 Bad Request
+        error if trying to update         an externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:contact_types.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /contacts:
@@ -1902,6 +2931,188 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of contacts, also known as bulk updating. Bulk updates
+        using a nested relationships         route are not supported. Returns 422
+        Bad Request error if trying to update an externally synced record.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Ccontactsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:contacts.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][contact_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][location_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][first_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][last_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][title]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][important]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[first_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[last_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[title]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[contact_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[important]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: filter[primary_email]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[psa_id]
+        in: query
+        description: 'Validations:Must be a StringMetadata:Notes: This must be accompanied
+          by the filter for psa_integration_type'
+        required: false
+        schema:
+          type: string
+      - name: filter[psa_integration_type]
+        in: query
+        description: Validations:Must be one of:manage,autotask,tigerpaw,kaseya-bms,pulseway-psa,vorex.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified contacts. Returns the deleted contacts
@@ -2106,6 +3317,204 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing contact. Returns 422 Bad Request
+        error if trying to update an         externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:contacts.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][contact_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][location_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][first_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][last_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][title]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][important]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[contact_emails]
+        in: query
+        description: Can contain multiple emailsValidations:Must be an Array of nested
+          elements
+        required: false
+        schema:
+          type: string
+      - name: data[contact_emails][_]
+        in: query
+        description: "Nameless hash, should look like: {â\x80\x9Cvalueâ\x80\x9D: â\x80\
+          \x9Cemail@company.comâ\x80\x9D, â\x80\x9Cprimaryâ\x80\x9D: true, â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[contact_emails][_][value]
+        in: query
+        description: Must be a valid email address formatValidations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_emails][_][label_name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_emails][_][primary]
+        in: query
+        description: Defaults to false if not provided.Validations:Must be one of:true,false.
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones]
+        in: query
+        description: Can contain multiple phonesValidations:Must be an Array of nested
+          elements
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones][_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Cvalueâ\x80\x9D: â\x80\
+          \x9C2341112233â\x80\x9D, â\x80\x9Cprimaryâ\x80\x9D: true, â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[contact_phones][_][value]
+        in: query
+        description: Phone numbers are stripped of all separators.Validations:Must
+          be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_phones][_][label_name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_phones][_][extension]
+        in: query
+        description: Phone extensions are stripped of all separators.Validations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones][_][primary]
+        in: query
+        description: Defaults to false if not provided.Validations:Must be one of:true,false.
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones][_][label_type]
+        in: query
+        description: Defaults to phone if not provided.Validations:Must be one of:phone,fax.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /copilot_smart_assist/documents:
     get:
       summary: ''
@@ -2177,6 +3586,77 @@ paths:
           description: Not Found
         '422':
           description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of items, also known as bulk updating. The bulk
+        update PATCH format is one that is similar to the response returned from a
+        GET on a list resource. It will accept a partial representation of objects,
+        as long as the required parameters are present.
+      parameters:
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[type]
+        in: query
+        description: Validations:Must be one of:stale,not_viewed,expired.
+        required: false
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Cannot be used in combination with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cdocumentsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:documents.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
       security:
       - apiKeyAuth: []
     delete:
@@ -2504,6 +3984,225 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+  /documents:
+    patch:
+      summary: ''
+      description: Updates a list of items, also known as bulk updating.
+      parameters:
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata::Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata::Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cdocumentsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:documents.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][public]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][is_uploaded]
+        in: query
+        description: Not permitted in PUT/PATCH, optional in POSTValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][document_folder_id]
+        in: query
+        description: Not permitted in PUT/PATCH, optional in POSTValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /documents/{id}:
+    patch:
+      summary: ''
+      description: Updates an existing document. Returns the updated object if successful.
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata::Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:documents.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][public]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][is_uploaded]
+        in: query
+        description: Not permitted in PUT/PATCH, optional in POSTValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][document_folder_id]
+        in: query
+        description: Not permitted in PUT/PATCH, optional in POSTValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
       security:
       - apiKeyAuth: []
   /domains:
@@ -3398,6 +5097,180 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing flexible asset type in your
+        account. Returns 422 Unprocessable Entity error if any relationships are present
+        in the request.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:flexible_asset_types.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][icon]
+        in: query
+        description: icon image nameValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][enabled]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields]
+        in: query
+        description: List of fields for this flexible asset type; each flexible asset
+          type must have at least one field and at least one field with show_in_list
+          set to trueValidations:Must be an Array of nested elements
+        required: true
+        schema:
+          type: string
+      - name: data[attributes][fields][id]
+        in: query
+        description: Required identifier for updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][fields][flexible_asset_type_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][fields][order]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][fields][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][kind]
+        in: query
+        description: Kind cannot be changed once there are traits created for the
+          fieldValidations:Must be one of:Checkbox,Date,Header,Number,Select,Text,Textbox,Upload,Tag,Percent,Password.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][hint]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][decimals]
+        in: query
+        description: A non-negative required value if field type is Number or PercentValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][fields][default_value]
+        in: query
+        description: Required if field type is SelectValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][tag_type]
+        in: query
+        description: 'Validations:Must be one of:AccountsUsers,Checklists,ChecklistTemplates,Contacts,Configurations,Documents,Domains,Passwords,Locations,Organizations,SslCertificates,Tickets,FlexibleAssetType:
+          id.'
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][required]
+        in: query
+        description: Indicates if the field is required for the flexible asset; it
+          will be set to false if the field type is HeaderValidations:Must be one
+          of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][use_for_title]
+        in: query
+        description: 'Indicates if the field name should be added to the flexible
+          asset name; it will be set to false if the field type is one of: Checkbox,
+          Header, Number, Password, Percent, Step, Tag, Textbox, UploadValidations:Must
+          be one of:true,false,1,0.'
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][expiration]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fields][show_in_list]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /flexible_assets:
     get:
       summary: ''
@@ -3555,6 +5428,87 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of flexible assets, also known as bulk updating.
+        Bulk updates using         a nested relationships route are not supported.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cflexible_assetsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:flexible_assets.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][traits]
+        in: query
+        description: A hash of key value pairs for the traits of this asset. Values
+          can be arrays. The key has to be an available field key from the specified
+          flexible asset type.Validations:Must be a Hash
+        required: false
+        schema:
+          type: object
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified flexible assets. Returns the deleted
@@ -3700,6 +5654,83 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a flexible asset in your account.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:flexible_assets.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][traits]
+        in: query
+        description: A hash of key value pairs for the traits of this asset. Values
+          can be arrays. The key has to be an available field key from the specified
+          flexible asset type.Validations:Must be a Hash
+        required: false
+        schema:
+          type: object
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
       security:
       - apiKeyAuth: []
     delete:
@@ -4117,6 +6148,200 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of locations, also known as bulk updating. Bulk
+        updates using a nested relationships         route are not supported. Returns
+        422 Bad Request error if trying to update an externally synced record.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Clocationsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:locations.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][primary]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][address_1]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][address_2]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][city]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][postal_code]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][region_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][country_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][phone]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][fax]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[city]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[region_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[country_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[psa_id]
+        in: query
+        description: 'Validations:Must be a StringMetadata:Notes: This must be accompanied
+          by the filter for psa_integration_type'
+        required: false
+        schema:
+          type: string
+      - name: filter[psa_integration_type]
+        in: query
+        description: Validations:Must be one of:manage,autotask,tigerpaw,kaseya-bms,pulseway-psa,vorex.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified locations. Returns the deleted locations
@@ -4298,6 +6523,148 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing location. Returns 422 Bad Request
+        error if trying to update an         externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships route.Validations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid organization ID in your account.'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:locations.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][primary]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][address_1]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][address_2]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][city]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][postal_code]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][region_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][country_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][phone]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fax]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /logs:
@@ -4522,6 +6889,60 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates an existing manufacturer name.        Returns 422 Bad Request
+        error if trying to update an externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:manufacturers.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /manufacturers/{manufacturer_id}/relationships/models:
     get:
       summary: ''
@@ -4725,6 +7146,82 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates an existing model name. Returns 422 Bad Request error if
+        trying to update an externally synced record.
+      parameters:
+      - name: manufacturer_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Manufacturer Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:models.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][manufacturer_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /models:
     get:
       summary: ''
@@ -4870,6 +7367,91 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of model names, also known as bulk updating. Bulk
+        updates using a nested relationships         route are not supported. Returns
+        422 Bad Request error if trying to update an externally synced record.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cmodelsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:models.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][manufacturer_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /models/{id}:
     get:
       summary: ''
@@ -4926,6 +7508,82 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates an existing model name. Returns 422 Bad Request error if
+        trying to update an externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: manufacturer_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Manufacturer Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:models.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][manufacturer_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /operating_systems:
@@ -5196,6 +7854,60 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates an organization status in your account. Returns 422 Bad
+        Request error if trying to update an         externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:organization_statuses.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /organization_types:
     get:
       summary: ''
@@ -5351,6 +8063,60 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates an organization type in your account. Returns 422 Bad Request
+        error if trying to update an         externally synced record.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:organization_types.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /organizations:
@@ -5639,6 +8405,228 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: 'Updates a list of organizations, also known as bulk updating.
+        Bulk updates using a nested relationships         route are not supported.
+        Returns 422 Bad Request error if trying to update an externally synced record
+        on         attributes other than: alert, description, quick_notes'
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Must be a hash if used with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Corganizationsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:organizations.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][alert]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][organization_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][quick_notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][short_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[organization_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[organization_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[created_at]
+        in: query
+        description: The specified string must be a date range and comma-separated
+          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
+          or `end_date`. Date ranges longer than a week may be disallowed for performance
+          reasons.Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[updated_at]
+        in: query
+        description: The specified string must be a date range and comma-separated
+          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
+          or `end_date`. Date ranges longer than a week may be disallowed for performance
+          reasons.Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[my_glue_account_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[psa_id]
+        in: query
+        description: 'Validations:Must be a StringMetadata:Notes: This must be accompanied
+          by the filter for psa_integration_type'
+        required: false
+        schema:
+          type: string
+      - name: filter[psa_integration_type]
+        in: query
+        description: Validations:Must be one of:manage,autotask,tigerpaw,kaseya-bms,pulseway-psa,vorex.
+        required: false
+        schema:
+          type: string
+      - name: filter[group_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[primary]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[exclude]
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[exclude][id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[exclude][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: filter[exclude][organization_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[exclude][organization_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Marks organizations identified by the specified organization IDs
@@ -5870,7 +8858,187 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: 'Updates the details of an existing organization. Returns 422 Bad
+        Request         error if trying to update an externally synced record on attributes          other
+        than: alert, description, quick_notes'
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:organizations.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][alert]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][organization_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][quick_notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][short_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /organizations/{organization_id}/copilot_smart_assist/documents:
+    patch:
+      summary: ''
+      description: Updates a list of items, also known as bulk updating. The bulk
+        update PATCH format is one that is similar to the response returned from a
+        GET on a list resource. It will accept a partial representation of objects,
+        as long as the required parameters are present.
+      parameters:
+      - name: organization_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[type]
+        in: query
+        description: Validations:Must be one of:stale,not_viewed,expired.
+        required: false
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Cannot be used in combination with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cdocumentsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:documents.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified documents. Returns the deleted documents
@@ -6622,6 +9790,236 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: 'Updates the details of an existing configuration.         Returns
+        422 Unprocessable Entity error if any relationships are present in the request.         Returns
+        422 Unprocessable Entity error if trying to update an externally synced record
+        on         attributes other than: archived, asset_tag, notes, purchased_at,
+        restricted, serial_number, warranty_expires_at, mitp_device_expiration_date,
+        mitp_end_of_life_date'
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:configurations.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][configuration_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][configuration_status_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][location_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][contact_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][manufacturer_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][model_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][operating_system_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][operating_system_notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][hostname]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][primary_ip]
+        in: query
+        description: IP4 and IP6 are supportedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mac_address]
+        in: query
+        description: 17 Character limitValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][default_gateway]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][serial_number]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][asset_tag]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][position]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][installed_by]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][purchased_by]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][purchased_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][warranty_expires_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mitp_device_expiration_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][mitp_end_of_life_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][installed_at]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /organizations/{organization_id}/relationships/contacts:
     get:
       summary: ''
@@ -7154,6 +10552,310 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing contact. Returns 422 Bad Request
+        error if trying to update an         externally synced record.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:contacts.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][contact_type_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][location_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][first_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][last_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][title]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][important]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[contact_emails]
+        in: query
+        description: Can contain multiple emailsValidations:Must be an Array of nested
+          elements
+        required: false
+        schema:
+          type: string
+      - name: data[contact_emails][_]
+        in: query
+        description: "Nameless hash, should look like: {â\x80\x9Cvalueâ\x80\x9D: â\x80\
+          \x9Cemail@company.comâ\x80\x9D, â\x80\x9Cprimaryâ\x80\x9D: true, â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[contact_emails][_][value]
+        in: query
+        description: Must be a valid email address formatValidations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_emails][_][label_name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_emails][_][primary]
+        in: query
+        description: Defaults to false if not provided.Validations:Must be one of:true,false.
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones]
+        in: query
+        description: Can contain multiple phonesValidations:Must be an Array of nested
+          elements
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones][_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Cvalueâ\x80\x9D: â\x80\
+          \x9C2341112233â\x80\x9D, â\x80\x9Cprimaryâ\x80\x9D: true, â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[contact_phones][_][value]
+        in: query
+        description: Phone numbers are stripped of all separators.Validations:Must
+          be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_phones][_][label_name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[contact_phones][_][extension]
+        in: query
+        description: Phone extensions are stripped of all separators.Validations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones][_][primary]
+        in: query
+        description: Defaults to false if not provided.Validations:Must be one of:true,false.
+        required: false
+        schema:
+          type: string
+      - name: data[contact_phones][_][label_type]
+        in: query
+        description: Defaults to phone if not provided.Validations:Must be one of:phone,fax.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /organizations/{organization_id}/relationships/documents/{id}:
+    patch:
+      summary: ''
+      description: Updates an existing document. Returns the updated object if successful.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata::Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:documents.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][public]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][is_uploaded]
+        in: query
+        description: Not permitted in PUT/PATCH, optional in POSTValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][document_folder_id]
+        in: query
+        description: Not permitted in PUT/PATCH, optional in POSTValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
       security:
       - apiKeyAuth: []
   /organizations/{organization_id}/relationships/domains:
@@ -7838,6 +11540,148 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing location. Returns 422 Bad Request
+        error if trying to update an         externally synced record.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships route.Validations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid organization ID in your account.'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:locations.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][primary]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][address_1]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][address_2]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][city]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][postal_code]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][region_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][country_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][phone]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][fax]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified locations. Returns the deleted locations
@@ -8380,6 +12224,164 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing password.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: show_password
+        in: query
+        description: 'defaults to ''false'', Can be set to ''true'' to return the
+          passwordValidations:Must be one of:true,false.Metadata:Param Type: In URL'
+        required: false
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:passwords.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][password_category_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][username]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][password]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][otp_secret]
+        in: query
+        description: One Time Password secretValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][url]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][password_updated_at]
+        in: query
+        description: Date the password last changedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][autofill_selectors]
+        in: query
+        description: Used for identification of fields for password autofillValidations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][is_live]
+        in: query
+        description: Used for understanding - is this a live version of the password
+          or not.Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][generated_password_type]
+        in: query
+        description: This value indicates if the user is using the complex password
+          feature, and if the password is complex or pronounceable.Validations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified passwords. Returns the deleted passwords
@@ -8659,6 +12661,59 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a password category in your account.
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:password_categories.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /passwords:
@@ -8993,6 +13048,152 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of passwords, also known as bulk updating. Bulk
+        updates using a nested relationships route are not supported.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cpasswordsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:passwords.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][password_category_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][username]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][password]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][otp_secret]
+        in: query
+        description: One Time Password secretValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][url]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][password_updated_at]
+        in: query
+        description: Date the password last changedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][autofill_selectors]
+        in: query
+        description: Used for identification of fields for password autofillValidations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][is_live]
+        in: query
+        description: Used for understanding - is this a live version of the password
+          or not.Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][generated_password_type]
+        in: query
+        description: This value indicates if the user is using the complex password
+          feature, and if the password is complex or pronounceable.Validations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
     delete:
       summary: ''
       description: Deletes one or more specified passwords. Returns the deleted passwords
@@ -9191,6 +13392,164 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing password.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: show_password
+        in: query
+        description: 'defaults to ''false'', Can be set to ''true'' to return the
+          passwordValidations:Must be one of:true,false.Metadata:Param Type: In URL'
+        required: false
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:passwords.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][password_category_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][username]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][password]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][otp_secret]
+        in: query
+        description: One Time Password secretValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][url]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][password_updated_at]
+        in: query
+        description: Date the password last changedValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][autofill_selectors]
+        in: query
+        description: Used for identification of fields for password autofillValidations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][is_live]
+        in: query
+        description: Used for understanding - is this a live version of the password
+          or not.Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][generated_password_type]
+        in: query
+        description: This value indicates if the user is using the complex password
+          feature, and if the password is complex or pronounceable.Validations:Must
+          be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
     delete:
@@ -9687,6 +14046,84 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the name or profile picture (avatar) of an existing user.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:users.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][first_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][last_name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][avatar]
+        in: query
+        description: A hash of avatar data or an empty hash to removeValidations:Must
+          be a Hash
+        required: false
+        schema:
+          type: object
+      - name: data[attributes][avatar][content]
+        in: query
+        description: A base64-encoded imageValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][avatar][file_name]
+        in: query
+        description: The image file nameValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /{resource_type}/{resource_id}/relationships/attachments:
     post:
       summary: ''
@@ -9810,6 +14247,83 @@ paths:
         required: true
         schema:
           type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /{resource_type}/{resource_id}/relationships/attachments/{id}:
+    patch:
+      summary: ''
+      description: Updates the details of an existing attachment. Only the attachment
+        name that         is displayed on the asset view screen can be changed. The
+        originalfile_namecan't be changed.
+      parameters:
+      - name: resource_type
+        in: path
+        description: 'The resource type of the parent resourceValidations:Must be
+          one of:checklists,checklist_templates,configurations,contacts,documents,domains,locations,passwords,ssl_certificates,flexible_assets,tickets.Metadata:Param
+          Type: In URL'
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: 'The resource id of the parent resource.Validations:Must be a
+          number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:attachments.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -9974,6 +14488,82 @@ paths:
         required: true
         schema:
           type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /{resource_type}/{resource_id}/relationships/related_items/{id}:
+    patch:
+      summary: ''
+      description: Updates the details of an existing related item. Only the related
+        item notes         that are displayed on the asset view screen can be changed.
+      parameters:
+      - name: resource_type
+        in: path
+        description: 'The resource type of the parent resourceValidations:Must be
+          one of:checklists,checklist_templates,configurations,contacts,documents,domains,folders,locations,passwords,ssl_certificates,flexible_assets,tickets.Metadata:Param
+          Type: In URL'
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: 'The resource id of the parent resource.Validations:Must be a
+          number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:related_items.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data[attributes][notes]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
