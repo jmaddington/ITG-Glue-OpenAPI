@@ -4078,6 +4078,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: data[_][attributes][sop_generator]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -4188,6 +4194,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: data[attributes][sop_generator]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -10841,6 +10853,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: data[attributes][sop_generator]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
