@@ -11927,7 +11927,7 @@ paths:
           type: object
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,user_resource_accesses,group_resource_accesses.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
@@ -12207,7 +12207,7 @@ paths:
           type: string
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
@@ -12833,7 +12833,7 @@ paths:
           type: object
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,user_resource_accesses,group_resource_accesses.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
@@ -13377,7 +13377,7 @@ paths:
           type: integer
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
