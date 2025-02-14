@@ -3518,13 +3518,12 @@ paths:
   /copilot_smart_assist/documents:
     get:
       summary: ''
-      description: 'Offer analytics on documentation usage, such as ''Documents not
-        viewed in X amount of time'', ''Documents that were never viewed'', ''Documents
-        that are expired'', and ''Duplicate documents''.
-
-
-        Note: The maximum number of results that can be requested is 1000. If your
-        requests are timing out, try lowering the page size.'
+      description: "Offer analytics on documentation usage, such as â\x80\x98Documents\
+        \ not viewed in X amount of timeâ\x80\x99, â\x80\x98Documents that were never\
+        \ viewedâ\x80\x99, â\x80\x98Documents that are expiredâ\x80\x99, and â\x80\
+        \x98Duplicate documentsâ\x80\x99.\n\nNote: The maximum number of results that\
+        \ can be requested is 1000. If your requests are timing out, try lowering\
+        \ the page size."
       parameters:
       - name: page[size]
         in: query
@@ -4607,11 +4606,9 @@ paths:
   /exports/{id}:
     get:
       summary: ''
-      description: '''Retrieve a particular export for current account.''
-
-
-        Note: The maximum number of results that can be requested is 1000. If your
-        requests are timing out, try lowering the page size.'
+      description: "â\x80\x98Retrieve a particular export for current account.â\x80\
+        \x99\n\nNote: The maximum number of results that can be requested is 1000.\
+        \ If your requests are timing out, try lowering the page size."
       parameters:
       - name: id
         in: path
@@ -6024,10 +6021,10 @@ paths:
       - apiKeyAuth: []
     post:
       summary: ''
-      description: Creates a new location under the specified organization. The :organization_id
-        is specified         in the URL or in the request body for `/locations` route.
-        Returns a 201 status on success; the created object is returned the response
-        body.
+      description: "Creates a new location under the specified organization. The :organization_id\
+        \ is specified         in the URL or in the request body for â\x80\x98/locations`\
+        \ route. Returns a 201 status on success; the created object is returned the\
+        \ response body."
       parameters:
       - name: organization_id
         in: query
@@ -6720,10 +6717,10 @@ paths:
           type: object
       - name: filter[created_at]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
@@ -8202,19 +8199,19 @@ paths:
           type: integer
       - name: filter[created_at]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
       - name: filter[updated_at]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
@@ -8541,19 +8538,19 @@ paths:
           type: integer
       - name: filter[created_at]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
       - name: filter[updated_at]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
@@ -8714,19 +8711,19 @@ paths:
           type: integer
       - name: filter[created_at]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
       - name: filter[updated_at]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
@@ -11355,10 +11352,10 @@ paths:
       - apiKeyAuth: []
     post:
       summary: ''
-      description: Creates a new location under the specified organization. The :organization_id
-        is specified         in the URL or in the request body for `/locations` route.
-        Returns a 201 status on success; the created object is returned the response
-        body.
+      description: "Creates a new location under the specified organization. The :organization_id\
+        \ is specified         in the URL or in the request body for â\x80\x98/locations`\
+        \ route. Returns a 201 status on success; the created object is returned the\
+        \ response body."
       parameters:
       - name: organization_id
         in: path
@@ -11964,8 +11961,9 @@ paths:
           type: integer
       - name: show_password
         in: query
-        description: 'defaults to ''false'', Can be set to ''true'' to return the
-          passwordValidations:Must be one of:true,false.Metadata:Param Type: In URL'
+        description: "defaults to â\x80\x98falseâ\x80\x99, Can be set to â\x80\x98\
+          trueâ\x80\x99 to return the passwordValidations:Must be one of:true,false.Metadata:Param\
+          \ Type: In URL"
         required: false
         schema:
           type: string
@@ -12032,16 +12030,16 @@ paths:
           type: string
       - name: data[attributes][resource_id]
         in: query
-        description: Must be used together with `resource_type`Validations:Must be
-          a number.
+        description: "Must be used together with â\x80\x98resource_type`Validations:Must\
+          \ be a number."
         required: false
         schema:
           type: integer
       - name: data[attributes][resource_type]
         in: query
-        description: Must be used together with `resource_id`Validations:Must be one
-          of:Configuration,Contact,Document,Domain,Location,SSL Certificate,Flexible
-          Asset,Ticket.
+        description: "Must be used together with â\x80\x98resource_id`Validations:Must\
+          \ be one of:Configuration,Contact,Document,Domain,Location,SSL Certificate,Flexible\
+          \ Asset,Ticket."
         required: false
         schema:
           type: string
@@ -12094,6 +12092,13 @@ paths:
         description: This value indicates if the user is using the complex password
           feature, and if the password is complex or pronounceable.Validations:Must
           be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][shareable]
+        in: query
+        description: Indicates if password is can be shared with Secure Password Sharing
+          feature.Validations:Must be one of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -12216,16 +12221,16 @@ paths:
           type: string
       - name: show_password
         in: query
-        description: 'defaults to ''true'', Can be set to ''false'' to not return
-          the passwordValidations:Must be one of:true,false.Metadata:Param Type: In
-          URL'
+        description: "defaults to â\x80\x98trueâ\x80\x99, Can be set to â\x80\x98\
+          falseâ\x80\x99 to not return the passwordValidations:Must be one of:true,false.Metadata:Param\
+          \ Type: In URL"
         required: false
         schema:
           type: string
       - name: version_id
         in: query
-        description: 'Set the password''s version ID to return it''s revisionValidations:Must
-          be a number.Metadata:Param Type: In URL'
+        description: "Set the passwordâ\x80\x99s version ID to return itâ\x80\x99\
+          s revisionValidations:Must be a number.Metadata:Param Type: In URL"
         required: false
         schema:
           type: integer
@@ -12263,8 +12268,9 @@ paths:
           type: integer
       - name: show_password
         in: query
-        description: 'defaults to ''false'', Can be set to ''true'' to return the
-          passwordValidations:Must be one of:true,false.Metadata:Param Type: In URL'
+        description: "defaults to â\x80\x98falseâ\x80\x99, Can be set to â\x80\x98\
+          trueâ\x80\x99 to return the passwordValidations:Must be one of:true,false.Metadata:Param\
+          \ Type: In URL"
         required: false
         schema:
           type: string
@@ -12378,6 +12384,13 @@ paths:
         description: This value indicates if the user is using the complex password
           feature, and if the password is complex or pronounceable.Validations:Must
           be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][shareable]
+        in: query
+        description: Indicates if password is can be shared with Secure Password Sharing
+          feature.Validations:Must be one of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -12870,8 +12883,9 @@ paths:
           type: integer
       - name: show_password
         in: query
-        description: 'defaults to ''false'', Can be set to ''true'' to return the
-          passwordValidations:Must be one of:true,false.Metadata:Param Type: In URL'
+        description: "defaults to â\x80\x98falseâ\x80\x99, Can be set to â\x80\x98\
+          trueâ\x80\x99 to return the passwordValidations:Must be one of:true,false.Metadata:Param\
+          \ Type: In URL"
         required: false
         schema:
           type: string
@@ -12938,16 +12952,16 @@ paths:
           type: string
       - name: data[attributes][resource_id]
         in: query
-        description: Must be used together with `resource_type`Validations:Must be
-          a number.
+        description: "Must be used together with â\x80\x98resource_type`Validations:Must\
+          \ be a number."
         required: false
         schema:
           type: integer
       - name: data[attributes][resource_type]
         in: query
-        description: Must be used together with `resource_id`Validations:Must be one
-          of:Configuration,Contact,Document,Domain,Location,SSL Certificate,Flexible
-          Asset,Ticket.
+        description: "Must be used together with â\x80\x98resource_id`Validations:Must\
+          \ be one of:Configuration,Contact,Document,Domain,Location,SSL Certificate,Flexible\
+          \ Asset,Ticket."
         required: false
         schema:
           type: string
@@ -13000,6 +13014,13 @@ paths:
         description: This value indicates if the user is using the complex password
           feature, and if the password is complex or pronounceable.Validations:Must
           be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][shareable]
+        in: query
+        description: Indicates if password is can be shared with Secure Password Sharing
+          feature.Validations:Must be one of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -13190,6 +13211,13 @@ paths:
         description: This value indicates if the user is using the complex password
           feature, and if the password is complex or pronounceable.Validations:Must
           be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][shareable]
+        in: query
+        description: Indicates if password is can be shared with Secure Password Sharing
+          feature.Validations:Must be one of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -13386,16 +13414,16 @@ paths:
           type: string
       - name: show_password
         in: query
-        description: 'defaults to ''true'', Can be set to ''false'' to not return
-          the passwordValidations:Must be one of:true,false.Metadata:Param Type: In
-          URL'
+        description: "defaults to â\x80\x98trueâ\x80\x99, Can be set to â\x80\x98\
+          falseâ\x80\x99 to not return the passwordValidations:Must be one of:true,false.Metadata:Param\
+          \ Type: In URL"
         required: false
         schema:
           type: string
       - name: version_id
         in: query
-        description: 'Set the password''s version ID to return it''s revisionValidations:Must
-          be a number.Metadata:Param Type: In URL'
+        description: "Set the passwordâ\x80\x99s version ID to return itâ\x80\x99\
+          s revisionValidations:Must be a number.Metadata:Param Type: In URL"
         required: false
         schema:
           type: integer
@@ -13433,8 +13461,9 @@ paths:
           type: integer
       - name: show_password
         in: query
-        description: 'defaults to ''false'', Can be set to ''true'' to return the
-          passwordValidations:Must be one of:true,false.Metadata:Param Type: In URL'
+        description: "defaults to â\x80\x98falseâ\x80\x99, Can be set to â\x80\x98\
+          trueâ\x80\x99 to return the passwordValidations:Must be one of:true,false.Metadata:Param\
+          \ Type: In URL"
         required: false
         schema:
           type: string
@@ -13548,6 +13577,13 @@ paths:
         description: This value indicates if the user is using the complex password
           feature, and if the password is complex or pronounceable.Validations:Must
           be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][shareable]
+        in: query
+        description: Indicates if password is can be shared with Secure Password Sharing
+          feature.Validations:Must be one of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -13905,10 +13941,10 @@ paths:
           type: string
       - name: filter[date]
         in: query
-        description: The specified string must be a date range and comma-separated
-          as `start_date, end_date`. The dates are UTC. Use `*` for unspecified `start_date`
-          or `end_date`. Date ranges longer than a week may be disallowed for performance
-          reasons.Validations:Must be a String
+        description: "The specified string must be a date range and comma-separated\
+          \ as â\x80\x98start_date, end_date`. The dates are UTC. Use `*` for unspecified\
+          \ `start_date` or `end_date`. Date ranges longer than a week may be disallowed\
+          \ for performance reasons.Validations:Must be a String"
         required: false
         schema:
           type: string
@@ -14287,9 +14323,9 @@ paths:
   /{resource_type}/{resource_id}/relationships/attachments/{id}:
     patch:
       summary: ''
-      description: Updates the details of an existing attachment. Only the attachment
-        name that         is displayed on the asset view screen can be changed. The
-        originalfile_namecan't be changed.
+      description: "Updates the details of an existing attachment. Only the attachment\
+        \ name that         is displayed on the asset view screen can be changed.\
+        \ The originalfile_namecanâ\x80\x99t be changed."
       parameters:
       - name: resource_type
         in: path
