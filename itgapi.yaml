@@ -5590,6 +5590,12 @@ paths:
         required: true
         schema:
           type: integer
+      - name: filter[archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -5807,7 +5813,7 @@ paths:
           type: object
       - name: filter[name]
         in: query
-        description: exact match onlyValidations:Must be a String
+        description: Validations:Must be a String
         required: false
         schema:
           type: string
