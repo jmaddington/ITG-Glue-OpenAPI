@@ -37,51 +37,6 @@ servers:
 - url: https://api.au.itglue.com
   description: Australia data center
 paths:
-  /api/my_glue_module_settings:
-    post:
-      summary: ''
-      description: Creates a new MyGlue Module Setting in your account. Returns the
-        created object if successful.
-      parameters:
-      - name: type
-        in: query
-        description: Validations:Must be one of:my-glue-module-settings.
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        description: Validations:Must be a Hash
-        required: true
-        schema:
-          type: object
-      - name: attributes[module_type]
-        in: query
-        description: Validations:Must be a String
-        required: true
-        schema:
-          type: string
-      - name: attributes[enabled]
-        in: query
-        description: Validations:Must be one of:true,false,1,0.
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-        '400':
-          description: Bad Request
-        '415':
-          description: Unsupported Media Type
-        '422':
-          description: Unprocessable Entity
-      security:
-      - apiKeyAuth: []
   /configuration_interfaces:
     post:
       summary: ''
@@ -2136,6 +2091,36 @@ paths:
           description: Unsupported Media Type
         '422':
           description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Delete a configuration interface. Returns a 204 status code if
+        successful.
+      parameters:
+      - name: configuration_id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
       security:
       - apiKeyAuth: []
   /configurations/{id}:
@@ -5658,7 +5643,8 @@ paths:
           type: object
       - name: include
         in: query
-        description: 'Validations:Must be one of:users.Metadata:Param Type: CGI
+        description: 'Validations:Must be one of:users,organizations,resource_type_restrictions,my_glue_account.Metadata:Param
+          Type: CGI
 
           Notes: Comma separated values'
         required: false
@@ -5713,7 +5699,8 @@ paths:
           type: string
       - name: include
         in: query
-        description: 'Validations:Must be one of:users.Metadata:Param Type: CGI
+        description: 'Validations:Must be one of:users,organizations,resource_type_restrictions,my_glue_account.Metadata:Param
+          Type: CGI
 
           Notes: Comma separated values'
         required: false
