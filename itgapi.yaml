@@ -5663,6 +5663,167 @@ paths:
           description: Unauthorized
       security:
       - apiKeyAuth: []
+    post:
+      summary: ''
+      description: Creates a group.
+      parameters:
+      - name: type
+        in: query
+        description: Validations:Must be one of:groups.
+        required: true
+        schema:
+          type: string
+      - name: attributes
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: attributes[id]
+        in: query
+        description: Unique identifier for the group bulk updateValidations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      - name: attributes[name]
+        in: query
+        description: Name of the groupValidations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: attributes[description]
+        in: query
+        description: Description of the groupValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: attributes[hide_from_my_glue]
+        in: query
+        description: Hide this group from my glueValidations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: attributes[accounts_user_ids]
+        in: query
+        description: "Array of account user idsValidations:Must be an array of any\
+          \ typeMetadata::notes: accounts_user_ids HAS to include all the users that\
+          \ are in the group. You\n  get the users in the group by adding ?include=users\
+          \ to the GET groups/:id request.\n  If you want to remove all users from\
+          \ the group, you can send an empty array. If\n  you want to remove one user,\
+          \ send the all user ids without the user id you want\n  to remove. If you\
+          \ want to add a user, send the all user ids with the user id you\n  want\
+          \ to add."
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: "Updates a list of groups in bulk. The bulk update PATCH format\
+        \ is similar to the response from a GET on a list resource. It accepts a partial\
+        \ representation of each groupâ\x80\x94only the attributes you provide will\
+        \ be updated; all others remain unchanged."
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:groups.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Unique identifier for the group bulk updateValidations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Name of the groupValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][description]
+        in: query
+        description: Description of the groupValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][hide_from_my_glue]
+        in: query
+        description: Hide this group from my glueValidations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /groups/{id}:
     get:
       summary: ''
@@ -5719,6 +5880,110 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Deletes a group.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a group.
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Validations:Must be one of:groups.
+        required: true
+        schema:
+          type: string
+      - name: attributes
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: attributes[id]
+        in: query
+        description: Unique identifier for the group bulk updateValidations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      - name: attributes[name]
+        in: query
+        description: Name of the groupValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: attributes[description]
+        in: query
+        description: Description of the groupValidations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: attributes[hide_from_my_glue]
+        in: query
+        description: Hide this group from my glueValidations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: attributes[accounts_user_ids]
+        in: query
+        description: "Array of account user idsValidations:Must be an array of any\
+          \ typeMetadata::notes: accounts_user_ids HAS to include all the users that\
+          \ are in the group. You\n  get the users in the group by adding ?include=users\
+          \ to the GET groups/:id request.\n  If you want to remove all users from\
+          \ the group, you can send an empty array. If\n  you want to remove one user,\
+          \ send the all user ids without the user id you want\n  to remove. If you\
+          \ want to add a user, send the all user ids with the user id you\n  want\
+          \ to add."
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
   /locations:
@@ -11599,7 +11864,7 @@ paths:
           type: object
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,active_shared_links,user_resource_accesses,group_resource_accesses.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
@@ -11886,7 +12151,7 @@ paths:
           type: string
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,active_shared_links,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
@@ -12519,7 +12784,7 @@ paths:
           type: object
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,active_shared_links,user_resource_accesses,group_resource_accesses.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
@@ -13077,7 +13342,7 @@ paths:
           type: integer
       - name: include
         in: query
-        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
+        description: 'Validations:Must be one of:network_glue_networks,attachments,rotatable_password,updater,shared_links,active_shared_links,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
           Type: CGI
 
           Notes: Comma separated values'
