@@ -8512,7 +8512,7 @@ paths:
       description: 'Updates a list of organizations, also known as bulk updating.
         Bulk updates using a nested relationships         route are not supported.
         Returns 422 Bad Request error if trying to update an externally synced record
-        on         attributes other than: alert, description, quick_notes'
+        on         attributes other than: alert, description, quick_notes, my_glue_account_id'
       parameters:
       - name: data
         in: query
@@ -8964,7 +8964,7 @@ paths:
       summary: ''
       description: 'Updates the details of an existing organization. Returns 422 Bad
         Request         error if trying to update an externally synced record on attributes          other
-        than: alert, description, quick_notes'
+        than: alert, description, quick_notes, my_glue_account_id'
       parameters:
       - name: id
         in: path
