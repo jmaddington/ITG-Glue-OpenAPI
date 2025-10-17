@@ -3901,6 +3901,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: data[_][attributes][my_glue]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -4012,6 +4018,12 @@ paths:
         schema:
           type: integer
       - name: data[attributes][sop_generator]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
         required: false
@@ -10796,6 +10808,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: data[attributes][my_glue]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -13990,7 +14008,10 @@ paths:
   /users/{id}:
     get:
       summary: ''
-      description: 'Returns information about one user.
+      description: 'Returns information about one user. When the `check_authorization`
+        parameter is provided, the response includes a `resource-authorizations` attribute
+        containing authorization status for the requested resource types. Example
+        return value:
 
 
         Note: The maximum number of results that can be requested is 1000. If your
@@ -14020,6 +14041,16 @@ paths:
         in: query
         description: Field by which to sort the results. Prepend '-' for descending
           order.
+        required: false
+        schema:
+          type: string
+      - name: check_authorization
+        in: query
+        description: 'Comma-separated list of resource types to check authorization
+          for(e.g., ''Document,Password,Configuration''). When provided, adds ''resource-authorizations''
+
+          to the response with authorization status for each requested type.Validations:Must
+          be a StringMetadata:Param Type: Query Parameter'
         required: false
         schema:
           type: string
