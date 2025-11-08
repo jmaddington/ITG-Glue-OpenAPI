@@ -37,6 +37,720 @@ servers:
 - url: https://api.au.itglue.com
   description: Australia data center
 paths:
+  /checklists:
+    get:
+      summary: ''
+      description: 'Returns a list of checklists in your account.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: page[size]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Validations:Must be one of:completed,created_at,updated_at.Metadata:Param\
+          \ Type: CGI\nNotes: |\n  To Invert order use -, eg: -name\n  Comma separated\
+          \ values"
+        required: false
+        schema:
+          type: string
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI'
+        required: false
+        schema:
+          type: object
+      - name: include
+        in: query
+        description: 'Validations:Must be one of:attachments,checklist_tasks,user_resource_accesses,group_resource_accesses.Metadata:Param
+          Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+      security:
+      - apiKeyAuth: []
+    post:
+      summary: ''
+      description: Creates a checklist. Returns the created object if successful.
+      parameters:
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
+      - name: data[attributes][assignee_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][completed]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][due_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][checklist_template_id]
+        in: query
+        description: Required when creating a checklist from a checklist template.
+          \"name" and "description" will be ignored if provided.Validations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of checklists.
+      parameters:
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cchecklistsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][assignee_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][completed]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][due_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][checklist_template_id]
+        in: query
+        description: Required when creating a checklist from a checklist template.
+          \"name" and "description" will be ignored if provided.Validations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Deletes one or more specified checklists.
+      parameters:
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Cannot be used in combination with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cchecklistsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /checklists/copy:
+    post:
+      summary: ''
+      description: Copies multiple checklists. Returns the created objects if successful.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cchecklistsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk copiesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Organization to copy to. Required if organization_ids not provided.Validations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_ids]
+        in: query
+        description: Used instead of organization_id for copying checklist to multiple
+          organizationsValidations:Must be an array of any type
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][keep_assignees]
+        in: query
+        description: Retains assignees when copying checklists, defaults falseValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][keep_due_dates]
+        in: query
+        description: Retains due dates when copying checklists, defaults falseValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /checklists/{id}:
+    get:
+      summary: ''
+      description: 'Returns the details of an existing checklist.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Number of items per page (max 1000)
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Page number to retrieve
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: Field by which to sort the results. Prepend '-' for descending
+          order.
+        required: false
+        schema:
+          type: string
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Validations:Must be one of:attachments,checklist_tasks,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
+          Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates an existing checklist. Returns the updated object if successful.
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: organization_id
+        in: query
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][assignee_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][completed]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][due_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][checklist_template_id]
+        in: query
+        description: Required when creating a checklist from a checklist template.
+          \"name" and "description" will be ignored if provided.Validations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /checklists/{id}/copy:
+    post:
+      summary: ''
+      description: Copies a checklist. Returns the created object(s) if successful.
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: attributes
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: attributes[id]
+        in: query
+        description: Required identifier for bulk copiesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: attributes[organization_id]
+        in: query
+        description: Organization to copy to. Required if organization_ids not provided.Validations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: attributes[organization_ids]
+        in: query
+        description: Used instead of organization_id for copying checklist to multiple
+          organizationsValidations:Must be an array of any type
+        required: false
+        schema:
+          type: string
+      - name: attributes[keep_assignees]
+        in: query
+        description: Retains assignees when copying checklists, defaults falseValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: attributes[keep_due_dates]
+        in: query
+        description: Retains due dates when copying checklists, defaults falseValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /configuration_interfaces:
     post:
       summary: ''
@@ -3897,7 +4611,17 @@ paths:
           type: integer
       - name: data[_][attributes][sop_generator]
         in: query
-        description: Validations:Must be one of:true,false,1,0.
+        description: Set to true when the request originates from the SOP Generator
+          so usage can be tracked.Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][sop_folder]
+        in: query
+        description: Optional flag for SOP-generated documents. Defaults to false
+          and keeps the document in the root (or uses document_folder_id). Set to
+          true to create or reuse the SOP Generator folder.Validations:Must be one
+          of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -4019,7 +4743,17 @@ paths:
           type: integer
       - name: data[attributes][sop_generator]
         in: query
-        description: Validations:Must be one of:true,false,1,0.
+        description: Set to true when the request originates from the SOP Generator
+          so usage can be tracked.Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][sop_folder]
+        in: query
+        description: Optional flag for SOP-generated documents. Defaults to false
+          and keeps the document in the root (or uses document_folder_id). Set to
+          true to create or reuse the SOP Generator folder.Validations:Must be one
+          of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -9075,6 +9809,559 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+  /organizations/{organization_id}/relationships/checklists:
+    get:
+      summary: ''
+      description: 'Returns a list of checklists in your account.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Validations:Must be one of:completed,created_at,updated_at.Metadata:Param\
+          \ Type: CGI\nNotes: |\n  To Invert order use -, eg: -name\n  Comma separated\
+          \ values"
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI'
+        required: false
+        schema:
+          type: object
+      - name: include
+        in: query
+        description: 'Validations:Must be one of:attachments,checklist_tasks,user_resource_accesses,group_resource_accesses.Metadata:Param
+          Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+      security:
+      - apiKeyAuth: []
+    post:
+      summary: ''
+      description: Creates a checklist. Returns the created object if successful.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
+      - name: data[attributes][assignee_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][completed]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][due_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][checklist_template_id]
+        in: query
+        description: Required when creating a checklist from a checklist template.
+          \"name" and "description" will be ignored if provided.Validations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates a list of checklists.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cchecklistsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][assignee_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][completed]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][due_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][checklist_template_id]
+        in: query
+        description: Required when creating a checklist from a checklist template.
+          \"name" and "description" will be ignored if provided.Validations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Deletes one or more specified checklists.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Cannot be used in combination with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cchecklistsâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /organizations/{organization_id}/relationships/checklists/{id}:
+    get:
+      summary: ''
+      description: 'Returns the details of an existing checklist.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Number of items per page (max 1000)
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Page number to retrieve
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: Field by which to sort the results. Prepend '-' for descending
+          order.
+        required: false
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Validations:Must be one of:attachments,checklist_tasks,user_resource_accesses,group_resource_accesses,recent_versions,related_items,authorized_users.Metadata:Param
+          Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates an existing checklist. Returns the updated object if successful.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:checklists.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][assignee_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][description]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][completed]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][due_date]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][checklist_template_id]
+        in: query
+        description: Required when creating a checklist from a checklist template.
+          \"name" and "description" will be ignored if provided.Validations:Must be
+          a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /organizations/{organization_id}/relationships/configurations:
     get:
       summary: ''
@@ -10804,7 +12091,17 @@ paths:
           type: integer
       - name: data[attributes][sop_generator]
         in: query
-        description: Validations:Must be one of:true,false,1,0.
+        description: Set to true when the request originates from the SOP Generator
+          so usage can be tracked.Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][sop_folder]
+        in: query
+        description: Optional flag for SOP-generated documents. Defaults to false
+          and keeps the document in the root (or uses document_folder_id). Set to
+          true to create or reuse the SOP Generator folder.Validations:Must be one
+          of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -14005,6 +15302,65 @@ paths:
           description: Unauthorized
       security:
       - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates multiple users in a single request with the 'Allow All
+        Organizations' feature. This endpoint supports partial success, where some
+        users can succeed while others fail.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:users.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: The ID of the user to updateValidations:Must be a Integer
+        required: true
+        schema:
+          type: string
+      - name: data[attributes][all_organizations]
+        in: query
+        description: Whether the user has access to all organizations. Requires administrator
+          or manager with all_organizations permissions.Validations:Must be one of:true,false.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /users/{id}:
     get:
       summary: ''
@@ -14095,6 +15451,12 @@ paths:
         required: true
         schema:
           type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
       - name: data[attributes][first_name]
         in: query
         description: Validations:Must be a String
@@ -14126,6 +15488,13 @@ paths:
         required: false
         schema:
           type: string
+      - name: data[attributes][all_organizations]
+        in: query
+        description: Boolean indicating whether user can access all organizationsValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -14146,6 +15515,65 @@ paths:
       security:
       - apiKeyAuth: []
   /{resource_type}/{resource_id}/relationships/attachments:
+    get:
+      summary: ''
+      description: 'Returns a list of attachments for the specified resource. The
+        attachments         are returned in the order they were created, with the
+        most recent         attachments appearing first by default.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: resource_type
+        in: path
+        description: 'The resource type of the parent resourceValidations:Must be
+          one of:checklists,checklist_templates,configurations,contacts,documents,domains,locations,passwords,ssl_certificates,flexible_assets,tickets.Metadata:Param
+          Type: In URL'
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: 'The resource id of the parent resource.Validations:Must be a
+          number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Number of items per page (max 1000)
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Page number to retrieve
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: Field by which to sort the results. Prepend '-' for descending
+          order.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
     post:
       summary: ''
       description: Attaches a file to the asset specified in the ID parameter. Returns         the
@@ -14288,6 +15716,71 @@ paths:
       security:
       - apiKeyAuth: []
   /{resource_type}/{resource_id}/relationships/attachments/{id}:
+    get:
+      summary: ''
+      description: 'Returns the details of a specific attachment identified by its
+        ID.         The attachment must belong to the specified parent resource.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: resource_type
+        in: path
+        description: 'The resource type of the parent resourceValidations:Must be
+          one of:checklists,checklist_templates,configurations,contacts,documents,domains,locations,passwords,ssl_certificates,flexible_assets,tickets.Metadata:Param
+          Type: In URL'
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: 'The resource id of the parent resource.Validations:Must be a
+          number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Attachment IDValidations:Must be a number.Metadata:Param Type:
+          In URL'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Number of items per page (max 1000)
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Page number to retrieve
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: Field by which to sort the results. Prepend '-' for descending
+          order.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
     patch:
       summary: ''
       description: Updates the details of an existing attachment. Only the attachment
