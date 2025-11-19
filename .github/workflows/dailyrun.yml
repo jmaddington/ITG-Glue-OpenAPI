@@ -28,10 +28,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install openapi-spec-validator
 
       - name: Generate itgapi.yaml
         run: |
           python docs-to-yaml.py > itgapi.yaml
+
+      - name: Validate OpenAPI spec
+        run: |
+          openapi-spec-validator itgapi.yaml
+          if [ $? -ne 0 ]; then
+            echo "OpenAPI spec validation failed!"
+            exit 1
+          fi
+          echo "OpenAPI spec validation passed!"
 
       - name: Commit changes
         id: commit_changes
