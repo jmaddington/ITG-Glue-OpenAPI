@@ -124,37 +124,6 @@ paths:
       - apiKeyAuth: []
       tags:
       - Checklists
-    post:
-      summary: Create checklists
-      description: Creates a checklist. Returns the created object if successful.
-      parameters:
-      - name: organization_id
-        in: query
-        description: Only required for nested relationships route
-        required: true
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-        '401':
-          description: Unauthorized
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '415':
-          description: Unsupported Media Type
-        '422':
-          description: Unprocessable Entity
-      security:
-      - apiKeyAuth: []
-      tags:
-      - Checklists
     patch:
       summary: Bulk update checklists
       description: Updates a list of checklists.
@@ -196,32 +165,6 @@ paths:
         required: true
         schema:
           type: integer
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-        '401':
-          description: Unauthorized
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '415':
-          description: Unsupported Media Type
-        '422':
-          description: Unprocessable Entity
-      security:
-      - apiKeyAuth: []
-      tags:
-      - Checklists
-  /checklists/copy:
-    post:
-      summary: Copy checklists
-      description: Copies multiple checklists. Returns the created objects if successful.
-      parameters: []
       responses:
         '200':
           description: Successful response
@@ -330,93 +273,6 @@ paths:
         required: true
         schema:
           type: integer
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-        '401':
-          description: Unauthorized
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '415':
-          description: Unsupported Media Type
-        '422':
-          description: Unprocessable Entity
-      security:
-      - apiKeyAuth: []
-      tags:
-      - Checklists
-  /checklists/{id}/copy:
-    post:
-      summary: Copy checklists
-      description: Copies a checklist. Returns the created object(s) if successful.
-      parameters:
-      - name: id
-        in: path
-        description: ''
-        required: true
-        schema:
-          type: string
-      - name: type
-        in: query
-        description: Must be one of:checklists.
-        required: true
-        schema:
-          type: string
-          enum:
-          - checklists
-      - name: attributes
-        in: query
-        description: Must be a Hash
-        required: true
-        schema:
-          type: object
-      - name: attributes[id]
-        in: query
-        description: Required identifier for bulk copies
-        required: false
-        schema:
-          type: integer
-      - name: attributes[organization_id]
-        in: query
-        description: Organization to copy to. Required if organization_ids not provided.
-        required: false
-        schema:
-          type: integer
-      - name: attributes[organization_ids]
-        in: query
-        description: Used instead of organization_id for copying checklist to multiple
-          organizations
-        required: false
-        schema:
-          type: string
-      - name: attributes[keep_assignees]
-        in: query
-        description: Retains assignees when copying checklists, defaults false
-        required: false
-        schema:
-          type: boolean
-          enum:
-          - 'true'
-          - 'false'
-          - '1'
-          - '0'
-      - name: attributes[keep_due_dates]
-        in: query
-        description: Retains due dates when copying checklists, defaults false
-        required: false
-        schema:
-          type: boolean
-          enum:
-          - 'true'
-          - 'false'
-          - '1'
-          - '0'
       responses:
         '200':
           description: Successful response
@@ -6987,37 +6843,6 @@ paths:
                 type: object
         '401':
           description: Unauthorized
-      security:
-      - apiKeyAuth: []
-      tags:
-      - Checklists
-    post:
-      summary: Create checklists
-      description: Creates a checklist. Returns the created object if successful.
-      parameters:
-      - name: organization_id
-        in: path
-        description: Only required for nested relationships route
-        required: true
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-        '401':
-          description: Unauthorized
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '415':
-          description: Unsupported Media Type
-        '422':
-          description: Unprocessable Entity
       security:
       - apiKeyAuth: []
       tags:
