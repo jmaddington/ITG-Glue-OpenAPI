@@ -4883,6 +4883,32 @@ paths:
         required: false
         schema:
           type: string
+      - name: attributes[core_assets_types]
+        in: query
+        description: Contains strings types of core assets which should be included
+          into export, Nil if not provided.Validations:Must be an array of any type
+        required: false
+        schema:
+          type: string
+      - name: attributes[flexible_assets_types]
+        in: query
+        description: Contains ids of flexible assets which should be included into
+          export, Nil if not provided.Validations:Must be an array of any type
+        required: false
+        schema:
+          type: string
+      - name: attributes[all_flexible_assets]
+        in: query
+        description: Defaults to false if not providedValidations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: attributes[include_passwords]
+        in: query
+        description: Defaults to false if not providedValidations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -12707,6 +12733,397 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+  /organizations/{organization_id}/relationships/password_folders:
+    get:
+      summary: ''
+      description: 'Returns a list of password folders for a specified organization.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Validations:Must be one of:created_at,updated_at.Metadata:Param\
+          \ Type: CGI\nNotes: |\n  To Invert order use -, eg: -name\n  Comma separated\
+          \ values"
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI'
+        required: false
+        schema:
+          type: object
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+      security:
+      - apiKeyAuth: []
+    post:
+      summary: ''
+      description: Creates a new password folder under the organization specified
+        in the ID parameter. Returns the created object if successful.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:password_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: true
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Deletes one or more specified password folders. Returns the deleted
+        password folders and a 200 status code if successful. Returns 422 Unprocessable
+        Entity error if trying to delete a password folder that has dependent folders
+        or passwords.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Cannot be used in combination with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cpassword-foldersâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:password_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /organizations/{organization_id}/relationships/password_folders/{id}:
+    get:
+      summary: ''
+      description: 'Returns the details of an existing password folder.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Number of items per page (max 1000)
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Page number to retrieve
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: Field by which to sort the results. Prepend '-' for descending
+          order.
+        required: false
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Validations:Must be one of:user_resource_accesses,group_resource_accesses,authorized_users,ancestors.Metadata:Param
+          Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing password folder.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:password_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /organizations/{organization_id}/relationships/passwords:
     get:
       summary: ''
@@ -13627,6 +14044,103 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+  /password_folders:
+    patch:
+      summary: ''
+      description: Updates a list of password folders, also known as bulk updating.
+        Bulk updates using a nested relationships route are not supported.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cpassword-foldersâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:password_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /passwords:
     get:
       summary: ''
@@ -14097,6 +14611,14 @@ paths:
         in: query
         description: Indicates if password is can be shared with Secure Password Sharing
           feature.Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: copilot_smart_assist
+        in: query
+        description: 'Set to true for Copilot Smart Assist initiated bulk updates
+          so activity logs reflect that context.Validations:Must be one of:true,false.Metadata:Param
+          Type: In URL or JSON body root'
         required: false
         schema:
           type: string
