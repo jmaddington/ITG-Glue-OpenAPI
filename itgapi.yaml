@@ -4458,22 +4458,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: attributes[sop_generator]
-        in: query
-        description: Set to true when the request originates from the SOP Generator
-          so usage can be tracked.Validations:Must be one of:true,false,1,0.
-        required: false
-        schema:
-          type: string
-      - name: attributes[sop_folder]
-        in: query
-        description: Optional flag for SOP-generated documents. Defaults to false
-          and keeps the document in the root (or uses document_folder_id). Set to
-          true to create or reuse the SOP Generator folder.Validations:Must be one
-          of:true,false,1,0.
-        required: false
-        schema:
-          type: string
       - name: attributes[my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
@@ -4641,22 +4625,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: data[_][attributes][sop_generator]
-        in: query
-        description: Set to true when the request originates from the SOP Generator
-          so usage can be tracked.Validations:Must be one of:true,false,1,0.
-        required: false
-        schema:
-          type: string
-      - name: data[_][attributes][sop_folder]
-        in: query
-        description: Optional flag for SOP-generated documents. Defaults to false
-          and keeps the document in the root (or uses document_folder_id). Set to
-          true to create or reuse the SOP Generator folder.Validations:Must be one
-          of:true,false,1,0.
-        required: false
-        schema:
-          type: string
       - name: data[_][attributes][my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
@@ -4761,22 +4729,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: attributes[sop_generator]
-        in: query
-        description: Set to true when the request originates from the SOP Generator
-          so usage can be tracked.Validations:Must be one of:true,false,1,0.
-        required: false
-        schema:
-          type: string
-      - name: attributes[sop_folder]
-        in: query
-        description: Optional flag for SOP-generated documents. Defaults to false
-          and keeps the document in the root (or uses document_folder_id). Set to
-          true to create or reuse the SOP Generator folder.Validations:Must be one
-          of:true,false,1,0.
-        required: false
-        schema:
-          type: string
       - name: attributes[my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
@@ -5370,22 +5322,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: data[attributes][sop_generator]
-        in: query
-        description: Set to true when the request originates from the SOP Generator
-          so usage can be tracked.Validations:Must be one of:true,false,1,0.
-        required: false
-        schema:
-          type: string
-      - name: data[attributes][sop_folder]
-        in: query
-        description: Optional flag for SOP-generated documents. Defaults to false
-          and keeps the document in the root (or uses document_folder_id). Set to
-          true to create or reuse the SOP Generator folder.Validations:Must be one
-          of:true,false,1,0.
-        required: false
-        schema:
-          type: string
       - name: data[attributes][my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
@@ -12737,22 +12673,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: attributes[sop_generator]
-        in: query
-        description: Set to true when the request originates from the SOP Generator
-          so usage can be tracked.Validations:Must be one of:true,false,1,0.
-        required: false
-        schema:
-          type: string
-      - name: attributes[sop_folder]
-        in: query
-        description: Optional flag for SOP-generated documents. Defaults to false
-          and keeps the document in the root (or uses document_folder_id). Set to
-          true to create or reuse the SOP Generator folder.Validations:Must be one
-          of:true,false,1,0.
-        required: false
-        schema:
-          type: string
       - name: attributes[my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
@@ -12906,22 +12826,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: attributes[sop_generator]
-        in: query
-        description: Set to true when the request originates from the SOP Generator
-          so usage can be tracked.Validations:Must be one of:true,false,1,0.
-        required: false
-        schema:
-          type: string
-      - name: attributes[sop_folder]
-        in: query
-        description: Optional flag for SOP-generated documents. Defaults to false
-          and keeps the document in the root (or uses document_folder_id). Set to
-          true to create or reuse the SOP Generator folder.Validations:Must be one
-          of:true,false,1,0.
-        required: false
-        schema:
-          type: string
       - name: attributes[my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
@@ -13154,22 +13058,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: data[attributes][sop_generator]
-        in: query
-        description: Set to true when the request originates from the SOP Generator
-          so usage can be tracked.Validations:Must be one of:true,false,1,0.
-        required: false
-        schema:
-          type: string
-      - name: data[attributes][sop_folder]
-        in: query
-        description: Optional flag for SOP-generated documents. Defaults to false
-          and keeps the document in the root (or uses document_folder_id). Set to
-          true to create or reuse the SOP Generator folder.Validations:Must be one
-          of:true,false,1,0.
-        required: false
-        schema:
-          type: string
       - name: data[attributes][my_glue]
         in: query
         description: Validations:Must be one of:true,false,1,0.
