@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -31,7 +31,16 @@ jobs:
 
       - name: Generate itgapi.yaml
         run: |
-          python docs-to-yaml.py > itgapi.yaml
+          # Generate to a temp file so a failed scrape never truncates the
+          # published spec. docs-to-yaml.py exits non-zero on a bad fetch or
+          # if no paths were extracted, which fails this step (bash -e).
+          python docs-to-yaml.py > itgapi.yaml.new
+          # Extra guard: refuse output with no API paths.
+          if ! grep -q '^paths:' itgapi.yaml.new || ! grep -qE '^  /' itgapi.yaml.new; then
+            echo "::error::Generated spec has no paths - refusing to overwrite itgapi.yaml" >&2
+            exit 1
+          fi
+          mv itgapi.yaml.new itgapi.yaml
 
       - name: Commit changes
         id: commit_changes
@@ -51,3 +60,29 @@ jobs:
         if: steps.commit_changes.outputs.committed == 'true'
         run: |
           git push
+
+      # GitHub auto-disables scheduled workflows after 60 days of repository
+      # inactivity. When the docs haven't changed there is no commit, so a
+      # quiet period can silently disable this cron. Keep it alive with a
+      # throttled empty commit on a dedicated 'keepalive' branch so that
+      # main's history stays clean. Only commits when the repo has been
+      # idle for a while.
+      - name: Keepalive (prevent scheduled workflow auto-disable)
+        if: steps.commit_changes.outputs.committed != 'true'
+        run: |
+          last_commit=$(git log -1 --format=%ct)
+          now=$(date +%s)
+          age_days=$(( (now - last_commit) / 86400 ))
+          echo "Days since last commit on main: $age_days"
+          if [ "$age_days" -lt 45 ]; then
+            echo "Repo active within the last 45 days; no keepalive commit needed."
+            exit 0
+          fi
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          # Single, always-rewritten orphan commit so the keepalive branch
+          # never accumulates history.
+          git checkout --orphan keepalive
+          git rm -rf --quiet --cached . || true
+          git commit --allow-empty -m "chore: keepalive (prevent scheduled workflow auto-disable)"
+          git push --force origin keepalive

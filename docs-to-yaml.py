@@ -1,11 +1,20 @@
+import sys
 import requests
 from bs4 import BeautifulSoup
 import yaml
 import re
 
-# Step 1: Fetch the HTML content from the URL
+# Step 1: Fetch the HTML content from the URL.
+# Fail loudly on any fetch problem: a silent failure here previously caused
+# the workflow to commit an empty spec, then restore it on the next good run
+# (the "flip-flop" visible in git history).
 url = 'https://api.itglue.com/developer/'
-response = requests.get(url)
+try:
+    response = requests.get(url, timeout=60)
+    response.raise_for_status()
+except requests.RequestException as exc:
+    print(f"ERROR: failed to fetch {url}: {exc}", file=sys.stderr)
+    sys.exit(1)
 html_content = response.text
 
 # Step 2: Parse the HTML content using BeautifulSoup
@@ -288,6 +297,18 @@ for div in divs:
                                     openapi_spec['paths'][path][method]['responses'][code] = {
                                         'description': description
                                     }
+
+# Sanity check: if the fetch succeeded but the page structure changed (or the
+# body was not the expected docs HTML), no paths get extracted. Fail loudly
+# instead of emitting a valid-but-empty spec that would overwrite itgapi.yaml.
+if not openapi_spec['paths']:
+    print(
+        "ERROR: no API paths were extracted from "
+        f"{url} (page structure may have changed). Refusing to emit an "
+        "empty spec.",
+        file=sys.stderr,
+    )
+    sys.exit(1)
 
 # Step 6: Sort the paths and components alphabetically
 openapi_spec['paths'] = dict(sorted(openapi_spec['paths'].items()))
