@@ -14105,7 +14105,7 @@ paths:
           minimum: 1
       - name: sort
         in: query
-        description: "Validations:Must be one of:created_at,updated_at.Metadata:Param\
+        description: "Validations:Must be one of:name,created_at,updated_at.Metadata:Param\
           \ Type: CGI\nNotes: |\n  To Invert order use -, eg: -name\n  Comma separated\
           \ values"
         required: false
@@ -14120,6 +14120,12 @@ paths:
         schema:
           type: object
       - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[parent_id]
         in: query
         description: Validations:Must be a number.
         required: false
@@ -14284,6 +14290,12 @@ paths:
         schema:
           type: object
       - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[parent_id]
         in: query
         description: Validations:Must be a number.
         required: false
@@ -14530,6 +14542,12 @@ paths:
         schema:
           type: integer
       - name: filter[password_category_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[password_folder_id]
         in: query
         description: Validations:Must be a number.
         required: false
@@ -15135,6 +15153,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: filter[password_folder_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
       - name: filter[url]
         in: query
         description: Validations:Must be a String
@@ -15460,6 +15484,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: filter[parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: Successful response
@@ -15547,6 +15577,12 @@ paths:
         schema:
           type: integer
       - name: filter[password_category_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[password_folder_id]
         in: query
         description: Validations:Must be a number.
         required: false
@@ -16055,6 +16091,12 @@ paths:
         schema:
           type: integer
       - name: filter[password_category_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[password_folder_id]
         in: query
         description: Validations:Must be a number.
         required: false
