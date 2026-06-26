@@ -4250,6 +4250,115 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+  /document_folders:
+    patch:
+      summary: ''
+      description: Updates a list of document folders, also known as bulk updating.
+        Bulk updates using a nested relationships route are not supported.
+      parameters:
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cdocument-foldersâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:document_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[_][attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][my_glue]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /document_images:
     post:
       summary: ''
@@ -12523,11 +12632,425 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+  /organizations/{organization_id}/relationships/document_folders:
+    get:
+      summary: ''
+      description: 'Returns a list of document folders for a specified organization.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Validations:Must be one of:name,created_at,updated_at.Metadata:Param\
+          \ Type: CGI\nNotes: |\n  To Invert order use -, eg: -name\n  Comma separated\
+          \ values"
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI'
+        required: false
+        schema:
+          type: object
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+      security:
+      - apiKeyAuth: []
+    post:
+      summary: ''
+      description: Creates a new document folder under the organization specified
+        in the ID parameter. Returns the created object if successful.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:document_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: true
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: true
+        schema:
+          type: string
+      - name: data[attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][my_glue]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Deletes one or more specified document folders. Returns the deleted
+        document folders and a 200 status code if successful. Returns 422 Unprocessable
+        Entity error if trying to delete a document folder that has dependent folders
+        or documents.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Cannot be used in combination with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cdocument-foldersâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:document_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
+      - name: filter
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: object
+      - name: filter[id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: filter[parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /organizations/{organization_id}/relationships/document_folders/{id}:
+    get:
+      summary: ''
+      description: 'Returns the details of an existing document folder.
+
+
+        Note: The maximum number of results that can be requested is 1000. If your
+        requests are timing out, try lowering the page size.'
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: page[size]
+        in: query
+        description: Number of items per page (max 1000)
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+      - name: page[number]
+        in: query
+        description: Page number to retrieve
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: sort
+        in: query
+        description: Field by which to sort the results. Prepend '-' for descending
+          order.
+        required: false
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Validations:Must be one of:user_resource_accesses,group_resource_accesses,authorized_users,ancestors.Metadata:Param
+          Type: CGI
+
+          Notes: Comma separated values'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: Updates the details of an existing document folder.
+      parameters:
+      - name: organization_id
+        in: path
+        description: 'Only required for nested relationships routeValidations:Must
+          be a number.Metadata:Param Type: In URL
+
+          :Notes: Must be a valid Organization Id in your Account'
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be a HashMetadata:Param Type: JSON Body Param'
+        required: true
+        schema:
+          type: object
+      - name: data[type]
+        in: query
+        description: Validations:Must be one of:document_folders.
+        required: true
+        schema:
+          type: string
+      - name: data[attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[attributes][id]
+        in: query
+        description: Required identifier for bulk updatesValidations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][organization_id]
+        in: query
+        description: Not required when using nested relationship routesValidations:Must
+          be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][name]
+        in: query
+        description: Validations:Must be a String
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][parent_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      - name: data[attributes][restricted]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][my_glue]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
   /organizations/{organization_id}/relationships/documents:
     get:
       summary: ''
-      description: 'Returns a list of documents for a specified organization. Returns
-        only root level documents when document_folder_id is not specified.
+      description: 'Returns a list of documents for a specified organization.
 
 
         Note: The maximum number of results that can be requested is 1000. If your
@@ -17607,6 +18130,233 @@ paths:
         required: false
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+  /{resource_type}/{resource_id}/relationships/resource_accesses:
+    post:
+      summary: ''
+      description: Add user/group resource accesses to the resource specified in the
+        ID parameter.         All user/groups accessible by an API key can be used
+        to assign resource accesses. Returns the created object(s) if successful.         Multiple
+        user/group resource accesses can be created in bulk.
+      parameters:
+      - name: resource_type
+        in: path
+        description: 'The resource type of the parent resourceValidations:Must be
+          one of:checklists,configurations,contacts,documents,document_folders,domains,locations,password_folders,passwords,ssl_certificates,flexible_assets.Metadata:Param
+          Type: In URL'
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: 'The resource id of the parent resource.Validations:Must be a
+          number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: type
+        in: query
+        description: Validations:Must be one of:resource-accesses.
+        required: true
+        schema:
+          type: string
+      - name: attributes
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: attributes[accessor_type]
+        in: query
+        description: Validations:Must be one of:User,Group.
+        required: true
+        schema:
+          type: string
+      - name: attributes[accessor_id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    patch:
+      summary: ''
+      description: "Edit user/group resource accesses to a resource. The â\x80\x9C\
+        accessor-typeâ\x80\x9D can be â\x80\x9CUserâ\x80\x9D or â\x80\x9CGroupâ\x80\
+        \x9D, depending on who is being granted         access to the resource. The\
+        \ â\x80\x9Caccessor-idâ\x80\x9D is the id value for the â\x80\x9CGroupâ\x80\
+        \x9D or â\x80\x9CUserâ\x80\x9D         being granted access."
+      parameters:
+      - name: resource_type
+        in: path
+        description: 'The resource type of the parent resourceValidations:Must be
+          one of:checklists,configurations,contacts,documents,document_folders,domains,locations,password_folders,passwords,ssl_certificates,flexible_assets.Metadata:Param
+          Type: In URL'
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: 'The resource id of the parent resource.Validations:Must be a
+          number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cresource-accessesâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:resource-accesses.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][accessor_type]
+        in: query
+        description: Validations:Must be one of:User,Group.
+        required: false
+        schema:
+          type: string
+      - name: data[_][attributes][accessor_id]
+        in: query
+        description: Validations:Must be a number.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Deletes one or more specified resource accesses. Returns the deleted
+        resource accesses         and a 200 status code if successful.
+      parameters:
+      - name: resource_type
+        in: path
+        description: 'The resource type of the parent resourceValidations:Must be
+          one of:checklists,configurations,contacts,documents,document_folders,domains,locations,password_folders,passwords,ssl_certificates,flexible_assets.Metadata:Param
+          Type: In URL'
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: 'The resource id of the parent resource.Validations:Must be a
+          number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      - name: data
+        in: query
+        description: 'Validations:Must be an Array of nested elementsMetadata:Param
+          Type: JSON Body Param
+
+          Notes: Cannot be used in combination with filter'
+        required: true
+        schema:
+          type: string
+      - name: data[_]
+        in: query
+        description: "Nameless hash: should look like: {â\x80\x9Ctypeâ\x80\x9D: â\x80\
+          \x9Cresource-accessesâ\x80\x9D, â\x80\x9Cattributesâ\x80\x9D:â\x80¦}Validations:Must\
+          \ be a Hash"
+        required: false
+        schema:
+          type: object
+      - name: data[_][type]
+        in: query
+        description: Validations:Must be one of:resource-accesses.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes]
+        in: query
+        description: Validations:Must be a Hash
+        required: true
+        schema:
+          type: object
+      - name: data[_][attributes][accessor_type]
+        in: query
+        description: Validations:Must be one of:User,Group.
+        required: true
+        schema:
+          type: string
+      - name: data[_][attributes][accessor_id]
+        in: query
+        description: Validations:Must be a number.
+        required: true
+        schema:
+          type: integer
       responses:
         '200':
           description: Successful response
