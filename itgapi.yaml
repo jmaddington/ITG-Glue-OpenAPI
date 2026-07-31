@@ -6584,6 +6584,35 @@ paths:
           description: Unprocessable Entity
       security:
       - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Destroys a single flexible asset type with its ID. Returns a 204
+        status code if successful.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: 'Unprocessable Entity: flexible assets exist, remote asset
+            type is linked, or another FAT references this one as a tag field'
+        '423':
+          description: 'Locked: the type is actively synced with an adapter'
+      security:
+      - apiKeyAuth: []
   /flexible_assets:
     get:
       summary: ''
@@ -7188,6 +7217,13 @@ paths:
         required: false
         schema:
           type: string
+      - name: attributes[auto_add_new_organizations]
+        in: query
+        description: Automatically add new organizations to this groupValidations:Must
+          be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       - name: attributes[accounts_user_ids]
         in: query
         description: "Array of account user idsValidations:Must be an array of any\
@@ -7270,6 +7306,13 @@ paths:
       - name: data[attributes][hide_from_my_glue]
         in: query
         description: Hide this group from my glueValidations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: data[attributes][auto_add_new_organizations]
+        in: query
+        description: Automatically add new organizations to this groupValidations:Must
+          be one of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -7433,6 +7476,13 @@ paths:
       - name: attributes[hide_from_my_glue]
         in: query
         description: Hide this group from my glueValidations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
+      - name: attributes[auto_add_new_organizations]
+        in: query
+        description: Automatically add new organizations to this groupValidations:Must
+          be one of:true,false,1,0.
         required: false
         schema:
           type: string
@@ -9737,6 +9787,39 @@ paths:
           description: Unsupported Media Type
         '422':
           description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Delete the given organization type. Returns 204 if successful.
+        Types actively synced with an adapter cannot be deleted (423). Types referenced
+        by one or more organizations cannot be deleted.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+        '423':
+          description: Locked
       security:
       - apiKeyAuth: []
   /organizations:
