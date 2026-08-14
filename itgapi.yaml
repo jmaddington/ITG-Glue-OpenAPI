@@ -1278,6 +1278,40 @@ paths:
           description: Not Found
       security:
       - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Delete the given configuration type. Returns 204 if successful.
+        Configuration types actively synced with an adapter cannot be deleted (423).
+        Configuration types referenced by one or more configurations cannot be deleted
+        (422); the error reports how many configurations still use the type.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '415':
+          description: Unsupported Media Type
+        '422':
+          description: Unprocessable Entity
+        '423':
+          description: Locked
+      security:
+      - apiKeyAuth: []
   /configurations:
     get:
       summary: ''
@@ -3076,6 +3110,37 @@ paths:
           description: Unsupported Media Type
         '422':
           description: Unprocessable Entity
+      security:
+      - apiKeyAuth: []
+    delete:
+      summary: ''
+      description: Destroys a single contact type by its ID. Returns a 204 status
+        code if successful.
+      parameters:
+      - name: id
+        in: path
+        description: 'Validations:Must be a number.Metadata:Param Type: In URL'
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '422':
+          description: 'Unprocessable Entity: the contact type is still used by one
+            or more contacts'
+        '423':
+          description: 'Locked: the contact type is actively synced with an integration'
       security:
       - apiKeyAuth: []
   /contacts:
