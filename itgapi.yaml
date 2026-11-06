@@ -13263,8 +13263,9 @@ paths:
           minimum: 1
       - name: sort
         in: query
-        description: Field by which to sort the results. Prepend '-' for descending
-          order.
+        description: "Validations:Must be one of:name,created_at,updated_at.Metadata:Param\
+          \ Type: CGI\nNotes: |\n  To Invert order use -, eg: -name\n  Comma separated\
+          \ values"
         required: false
         schema:
           type: string
@@ -13282,6 +13283,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: filter[archived]
+        in: query
+        description: Validations:Must be one of:true,false,1,0.
+        required: false
+        schema:
+          type: string
       - name: page
         in: query
         description: 'Validations:Must be a HashMetadata:Param Type: CGI'
